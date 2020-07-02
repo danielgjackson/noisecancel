@@ -17,6 +17,8 @@ Bose 700 headphones have a "noise control" button to cycle through noise cancell
 
 You can turn off noise cancellation through the app, or as a _tile_ you can add to your quick settings, or as a quick-access shortcut you can pin to your launcher.
 
+You can turn noise cancelling back on by pressing the Noise Control button on the left ear cup.
+
 ## How?
 
 The application sends a short message (repeated 3 times) over the device's Serial Port Profile (SPP) connection, in hex:
