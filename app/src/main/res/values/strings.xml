@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Noise Cancelling Off</string>
+
+    <!-- Main menu -->
+    <string name="action_send">Turn off noise cancelling</string>
+    <string name="action_settings">Choose device</string>
+    <string name="action_pin_shortcut">Add shortcut to launcher</string>
+
+    <!-- Main activity -->
+    <string name="prompt_device_address">Your Bose 700 device:</string>
+    <string name="action_disable_noise_cancelling">Turn off noise cancelling</string>
+    <string name="prompt_end">You can turn noise cancelling back on by pressing the Noise Control button on the left ear cup.</string>
+
+    <!-- Settings -->
+    <string name="disclaimer1_title">Disclaimer</string>
+    <string name="disclaimer1_message">This product is provided \'AS IS\', the developer makes no warranties, accepts no liability, and hereby disclaims any implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose.</string>
+    <string name="disclaimer1_accept">Accept No Warranty</string>
+    <string name="disclaimer1_cancel">Cancel</string>
+
+    <string name="disclaimer2_title">Risk</string>
+    <string name="disclaimer2_message">This software sends a signal to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.</string>
+    <string name="disclaimer2_accept">Accept Liability</string>
+    <string name="disclaimer2_cancel">Cancel</string>
+
+    <string name="settings_choose_device">Choose Bose 700 headphones:</string>
+
+    <!-- Tile -->
+    <string name="tile_name">NC Off</string>
+
+    <!-- Shortcut -->
+    <string name="send_shortcut_short_label">NC Off</string>
+    <string name="send_shortcut_long_label">Quick link to turn noise cancelling off</string>
+    <string name="send_disabled_message">Noise cancelling off is not available</string>
+</resources>

@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="dev.danjackson.noisecancel.MainActivity">
+
+    <item
+        android:id="@+id/action_send"
+        android:orderInCategory="90"
+        android:title="@string/action_send"
+        android:icon="@drawable/ic_notification"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_pin_shortcut"
+        android:orderInCategory="110"
+        android:title="@string/action_pin_shortcut"
+        app:showAsAction="never" />
+
+</menu>
