@@ -16,7 +16,17 @@ class QuickStart : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Parameters to the quick start
+        //val data = intent.data
+        // intent.dataString
+        val level = intent.extras?.get("level")?.toString().orEmpty()
+
         val intent = Intent(this, SendService::class.java)
+
+        // Forward on data
+        //if (data != null) intent.data = data
+        intent.putExtra("level", level)
+
         SendService.enqueueWork(applicationContext, intent)
 
         finish()

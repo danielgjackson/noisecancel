@@ -15,13 +15,35 @@ class SendService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
         // val address = intent.getStringExtra("address")?.toString()
+        // val data = intent.data
+
+        val level = intent.extras?.get("level")?.toString().orEmpty()
+
         try {
-            showToast("Turning off noise cancelling...")
+            var description = getString(R.string.send_nc_off)
+            var message = messageNoiseCancellingOff
+
+            when (level) {
+                "0" -> {
+                    description = getString(R.string.send_nc_0)
+                    message = messageNoiseCancelling0
+                }
+                "5" -> {
+                    description = getString(R.string.send_nc_5)
+                    message = messageNoiseCancelling5
+                }
+                "10" -> {
+                    description = getString(R.string.send_nc_10)
+                    message = messageNoiseCancelling10
+                }
+            }
+
+            showToast(description)
 
             val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
             val deviceAddress = sharedPreferences.getString("device_address", null)
 
-            run(deviceAddress, messageNoiseCancellingOff, defaultSendTimes)
+            run(deviceAddress, message, defaultSendTimes)
         } catch (e: Exception) {
             showToast("ERROR: ${e.message}")
         }
@@ -105,12 +127,17 @@ class SendService : JobIntentService() {
         //   Response: 0x01 0x05 0x03 0x03 0x0b (10-level) (enabled)
         //val messageBuffer = byteArrayOf(0x01, 0x05, 0x02, 0x02, (10 - level).toByte(), (if (noiseCancelling) 1 else 0).toByte())
         val messageNoiseCancellingOff = byteArrayOf(0x01, 0x05, 0x02, 0x02, 0x00, 0x00)
+        val messageNoiseCancelling0 = byteArrayOf(0x01, 0x05, 0x02, 0x02, 0x0A, 0x01)
+        val messageNoiseCancelling5 = byteArrayOf(0x01, 0x05, 0x02, 0x02, 0x05, 0x01)
+        val messageNoiseCancelling10 = byteArrayOf(0x01, 0x05, 0x02, 0x02, 0x00, 0x01)
         private val uuidSpp: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
         private const val defaultSendTimes = 3
 
         private const val JOB_ID = 1
 
         fun enqueueWork(context: Context, intent: Intent) {
+            // val data = intent.data
+            // val level = intent.extras?.get("level")?.toString().orEmpty()
             enqueueWork(context, SendService::class.java, JOB_ID, intent)
         }
     }

@@ -11,13 +11,17 @@ This Android app allows you to quickly turn off noise cancellation on Bose 700 h
 
 ## Why?
 
-Bose 700 headphones have a "noise control" button to cycle through noise cancellation presets, but these are a scale (0-10) between filtering out external sound and actively passing it thorugh.  In a very quiet room, neither of these is needed, and any setting can result in an audible hiss.  The official _Bose Music_ app does allow you to temporarily turn off noise cancelling, but this setting is buried in the app and takes some time to get to.
+Bose 700 headphones have a "noise control" button to cycle through noise cancellation presets, but these are on a scale (three presets between 0-10) from actively passing external sound through, to cancelling out external sound.  In a very quiet room, any setting on this scale can result in an audible hiss, and you may not want any active pass-through/cancelling at all, but just the sound.  The official _Bose Music_ app does allow you to temporarily turn off noise cancelling, but this setting is buried in the app and takes some time to get to.
 
 ## When?
 
-You can turn off noise cancellation through the app, or as a _tile_ you can add to your quick settings, or as a quick-access shortcut you can pin to your launcher.
+You can:
 
-You can turn noise cancelling back on by pressing the Noise Control button on the left ear cup.
+* turn off noise cancellation through this app, or
+* add as a quick settings _tile_ to turn off with as single touch, or
+* add a single touch shortcut you can pin to your launcher.
+
+Noise cancelling will turn back on if you press the Noise Control button on the left ear cup, or when you next turn the headphones on. 
 
 ## How?
 
@@ -39,7 +43,7 @@ When toggling enabled on or off, device always starts at level=10 regardless of 
 
 ## Disclaimer
 
-> This product is provided 'AS IS', the developer makes no warranties, accepts no liability, and hereby disclaims any implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose. This software sends a signal to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.
+> This product is provided 'AS IS', the developer makes no warranties, accepts no liability, and hereby disclaims any implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose. This software sends a specific message to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.
 
 ## See also
 

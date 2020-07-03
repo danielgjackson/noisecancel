@@ -1,15 +1,21 @@
 <resources>
-    <string name="app_name">Noise Cancelling Off</string>
+    <string name="app_name">Noise Cancelling</string>
 
     <!-- Main menu -->
-    <string name="action_send">Turn off noise cancelling</string>
+    <string name="action_nc_off">Turn off noise cancelling</string>
     <string name="action_settings">Choose device</string>
-    <string name="action_pin_shortcut">Add shortcut to launcher</string>
+    <string name="action_nc_0">Noise cancelling level 0</string>
+    <string name="action_nc_5">Noise cancelling level 5</string>
+    <string name="action_nc_10">Noise cancelling level 10</string>
+    <string name="action_pin_shortcut_nc_off">Add shortcut for NC off</string>
+    <string name="action_pin_shortcut_nc_0">Add shortcut for NC 0</string>
+    <string name="action_pin_shortcut_nc_5">Add shortcut for NC 5</string>
+    <string name="action_pin_shortcut_nc_10">Add shortcut for NC 10</string>
 
     <!-- Main activity -->
-    <string name="prompt_device_address">Your Bose 700 device:</string>
+    <string name="prompt_device_address">Your Bose 700 headphones:</string>
     <string name="action_disable_noise_cancelling">Turn off noise cancelling</string>
-    <string name="prompt_end">You can turn noise cancelling back on by pressing the Noise Control button on the left ear cup.</string>
+    <string name="prompt_end">Noise cancelling will turn back on when you next start the headphones or press the Noise Control button on the left ear cup.</string>
 
     <!-- Settings -->
     <string name="disclaimer1_title">Disclaimer</string>
@@ -18,17 +24,32 @@
     <string name="disclaimer1_cancel">Cancel</string>
 
     <string name="disclaimer2_title">Risk</string>
-    <string name="disclaimer2_message">This software sends a signal to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.</string>
+    <string name="disclaimer2_message">This software sends a specific message to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.</string>
     <string name="disclaimer2_accept">Accept Liability</string>
     <string name="disclaimer2_cancel">Cancel</string>
 
     <string name="settings_choose_device">Choose Bose 700 headphones:</string>
 
+    <!-- SendService -->
+    <string name="send_nc_off">Turning off noise cancelling...</string>
+    <string name="send_nc_0">Noise cancelling level 0...</string>
+    <string name="send_nc_5">Noise cancelling level 5...</string>
+    <string name="send_nc_10">Noise cancelling level 10...</string>
+
     <!-- Tile -->
-    <string name="tile_name">NC Off</string>
+    <string name="tile_name_nc_off">NC Off</string>
+    <string name="tile_name_nc_0">NC Level 0</string>
+    <string name="tile_name_nc_5">NC Level 5</string>
+    <string name="tile_name_nc_10">NC Level 10</string>
 
     <!-- Shortcut -->
-    <string name="send_shortcut_short_label">NC Off</string>
-    <string name="send_shortcut_long_label">Quick link to turn noise cancelling off</string>
-    <string name="send_disabled_message">Noise cancelling off is not available</string>
+    <string name="nc_off_shortcut_short_label">NC Off</string>
+    <string name="nc_off_shortcut_long_label">Noise Cancelling Off</string>
+    <string name="nc_0_shortcut_short_label">NC 0</string>
+    <string name="nc_0_shortcut_long_label">Noise Cancelling Level 0</string>
+    <string name="nc_5_shortcut_short_label">NC 5</string>
+    <string name="nc_5_shortcut_long_label">Noise Cancelling Level 5</string>
+    <string name="nc_10_shortcut_short_label">NC 10</string>
+    <string name="nc_10_shortcut_long_label">Noise Cancelling Level 10</string>
+
 </resources>

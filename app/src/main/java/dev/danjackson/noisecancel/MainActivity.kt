@@ -1,10 +1,10 @@
 package dev.danjackson.noisecancel
 
-import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -129,18 +129,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun pinShortcut() {
+    private fun pinShortcut(id: String, iconId: Int, shortLabel: Int, longLabel: Int, level: String) {
         if (ShortcutManagerCompat.isRequestPinShortcutSupported(applicationContext)) {
-
-            val icon = IconCompat.createWithResource(applicationContext, R.drawable.ic_quick_launcher_foreground)
-
-            val pinShortcutInfo = ShortcutInfoCompat.Builder(applicationContext, "send")
+            val icon = IconCompat.createWithResource(applicationContext, iconId)
+            val pinShortcutInfo = ShortcutInfoCompat.Builder(applicationContext, id)
                 .setIcon(icon)
-                .setShortLabel(getString(R.string.send_shortcut_short_label))
-                .setLongLabel(getString(R.string.send_shortcut_long_label))
-                .setIntent(Intent(applicationContext, QuickStart::class.java).setAction(Intent.ACTION_VIEW))
+                .setShortLabel(getString(shortLabel))
+                .setLongLabel(getString(longLabel))
+                .setIntent(Intent(applicationContext, QuickStart::class.java).setAction(Intent.ACTION_VIEW).putExtra("level", level))
                 .build()
-
             ShortcutManagerCompat.requestPinShortcut(applicationContext, pinShortcutInfo, null)
         } else {
             Toast.makeText(this, "Shortcut pinning not supported", Toast.LENGTH_LONG).show()
@@ -149,12 +146,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            menu.setGroupDividerEnabled(true)
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_send -> {
+            R.id.action_nc_off -> {
                 run()
                 true
             }
@@ -162,8 +162,20 @@ class MainActivity : AppCompatActivity() {
                 settings()
                 true
             }
-            R.id.action_pin_shortcut -> {
-                pinShortcut()
+            R.id.action_pin_shortcut_nc_off -> {
+                pinShortcut("nc_off", R.mipmap.ic_quick_launcher_off, R.string.nc_off_shortcut_short_label, R.string.nc_off_shortcut_long_label, "off")
+                true
+            }
+            R.id.action_pin_shortcut_nc_0 -> {
+                pinShortcut("nc_0", R.mipmap.ic_quick_launcher_0, R.string.nc_0_shortcut_short_label, R.string.nc_0_shortcut_long_label, "0")
+                true
+            }
+            R.id.action_pin_shortcut_nc_5 -> {
+                pinShortcut("nc_5", R.mipmap.ic_quick_launcher_5, R.string.nc_5_shortcut_short_label, R.string.nc_5_shortcut_long_label, "5")
+                true
+            }
+            R.id.action_pin_shortcut_nc_10 -> {
+                pinShortcut("nc_10", R.mipmap.ic_quick_launcher_10, R.string.nc_10_shortcut_short_label, R.string.nc_10_shortcut_long_label, "10")
                 true
             }
             else -> super.onOptionsItemSelected(item)

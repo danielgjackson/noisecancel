@@ -4,23 +4,66 @@
     tools:context="dev.danjackson.noisecancel.MainActivity">
 
     <item
-        android:id="@+id/action_send"
-        android:orderInCategory="90"
-        android:title="@string/action_send"
-        android:icon="@drawable/ic_notification"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_action_settings"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_pin_shortcut"
-        android:orderInCategory="110"
-        android:title="@string/action_pin_shortcut"
-        app:showAsAction="never" />
+    <group android:id="@+id/group_levels">
+        <item
+            android:id="@+id/action_nc_off"
+            android:orderInCategory="90"
+            android:title="@string/action_nc_off"
+            android:icon="@drawable/ic_tile_nc_off"
+            app:showAsAction="always" />
+
+        <item
+            android:id="@+id/action_nc_0"
+            android:orderInCategory="150"
+            android:title="@string/action_nc_0"
+            android:icon="@drawable/ic_tile_nc_0"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_nc_5"
+            android:orderInCategory="155"
+            android:title="@string/action_nc_5"
+            android:icon="@drawable/ic_tile_nc_5"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_nc_10"
+            android:orderInCategory="160"
+            android:title="@string/action_nc_10"
+            android:icon="@drawable/ic_tile_nc_10"
+            app:showAsAction="never" />
+    </group>
+
+    <group android:id="@+id/group_shortcuts">
+        <item
+            android:id="@+id/action_pin_shortcut_nc_off"
+            android:orderInCategory="199"
+            android:title="@string/action_pin_shortcut_nc_off"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_pin_shortcut_nc_0"
+            android:orderInCategory="200"
+            android:title="@string/action_pin_shortcut_nc_0"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_pin_shortcut_nc_5"
+            android:orderInCategory="205"
+            android:title="@string/action_pin_shortcut_nc_5"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_pin_shortcut_nc_10"
+            android:orderInCategory="210"
+            android:title="@string/action_pin_shortcut_nc_10"
+            app:showAsAction="never" />
+    </group>
 
 </menu>

@@ -1,15 +1,66 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="send"
+        android:shortcutId="nc_off"
         android:enabled="true"
-        android:icon="@drawable/ic_quick_launcher_foreground"
-        android:shortcutShortLabel="@string/send_shortcut_short_label"
-        android:shortcutLongLabel="@string/send_shortcut_long_label"
-        android:shortcutDisabledMessage="@string/send_disabled_message">
+        android:icon="@mipmap/ic_quick_launcher_off"
+        android:roundIcon="@mipmap/ic_quick_launcher_off_round"
+        android:shortcutShortLabel="@string/nc_off_shortcut_short_label"
+        android:shortcutLongLabel="@string/nc_off_shortcut_long_label">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="dev.danjackson.noisecancel"
-            android:targetClass="dev.danjackson.noisecancel.QuickStart" />
-        <!-- <categories android:name="android.shortcut.conversation" /> -->
+            android:targetClass="dev.danjackson.noisecancel.QuickStart"
+        > <!-- android:data="content://dev.danjackson.noisecancel/send?level=off" -->
+        <extra android:name="level" android:value="off" />
+        </intent>
     </shortcut>
+
+    <shortcut
+        android:shortcutId="nc_0"
+        android:enabled="true"
+        android:icon="@mipmap/ic_quick_launcher_0"
+        android:roundIcon="@mipmap/ic_quick_launcher_0_round"
+        android:shortcutShortLabel="@string/nc_0_shortcut_short_label"
+        android:shortcutLongLabel="@string/nc_0_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.danjackson.noisecancel"
+            android:targetClass="dev.danjackson.noisecancel.QuickStart"
+            > <!-- android:data="content://dev.danjackson.noisecancel/send?level=0" -->
+            <extra android:name="level" android:value="0" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="nc_5"
+        android:enabled="true"
+        android:icon="@mipmap/ic_quick_launcher_5"
+        android:roundIcon="@mipmap/ic_quick_launcher_5_round"
+        android:shortcutShortLabel="@string/nc_5_shortcut_short_label"
+        android:shortcutLongLabel="@string/nc_5_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.danjackson.noisecancel"
+            android:targetClass="dev.danjackson.noisecancel.QuickStart"
+            > <!-- android:data="content://dev.danjackson.noisecancel/send?level=5" -->
+            <extra android:name="level" android:value="5" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="nc_10"
+        android:enabled="true"
+        android:icon="@mipmap/ic_quick_launcher_10"
+        android:roundIcon="@mipmap/ic_quick_launcher_10_round"
+        android:shortcutShortLabel="@string/nc_10_shortcut_short_label"
+        android:shortcutLongLabel="@string/nc_10_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.danjackson.noisecancel"
+            android:targetClass="dev.danjackson.noisecancel.QuickStart"
+            > <!-- android:data="content://dev.danjackson.noisecancel/send?level=10" -->
+            <extra android:name="level" android:value="10" />
+        </intent>
+    </shortcut>
+
 </shortcuts>

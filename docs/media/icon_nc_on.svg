@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Shape">
+        <path id="headphones" d="M12,1.88C7.428,1.88 3.72,5.588 3.72,10.16L3.72,16.6C3.72,18.127 4.953,19.36 6.48,19.36L9.24,19.36L9.24,12L5.56,12L5.56,10.16C5.56,6.6 8.44,3.72 12,3.72C15.56,3.72 18.44,6.6 18.44,10.16L18.44,12L14.76,12L14.76,19.36L17.52,19.36C19.047,19.36 20.28,18.127 20.28,16.6L20.28,10.16C20.28,5.588 16.572,1.88 12,1.88Z" style="fill:white;fill-rule:nonzero;"/>
+    </g>
+</svg>

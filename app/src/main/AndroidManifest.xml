@@ -18,7 +18,8 @@
             android:name=".QuickStart"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:icon="@drawable/ic_quick_launcher_foreground"
+            android:icon="@mipmap/ic_quick_launcher_off"
+            android:roundIcon="@mipmap/ic_quick_launcher_off_round"
             >
             <intent-filter>
                 <action android:name="dev.danjackson.noisecancel.SEND" />
@@ -31,9 +32,39 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name=".SendTileService"
-            android:icon="@drawable/ic_notification"
-            android:label="@string/tile_name"
+            android:name=".TileServiceNcOff"
+            android:icon="@drawable/ic_tile_nc_off"
+            android:label="@string/tile_name_nc_off"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".TileServiceNc0"
+            android:icon="@drawable/ic_tile_nc_0"
+            android:label="@string/tile_name_nc_0"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".TileServiceNc5"
+            android:icon="@drawable/ic_tile_nc_5"
+            android:label="@string/tile_name_nc_5"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".TileServiceNc10"
+            android:icon="@drawable/ic_tile_nc_10"
+            android:label="@string/tile_name_nc_10"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
