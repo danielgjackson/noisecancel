@@ -1,4 +1,4 @@
-# Noise Cancellation
+# Noise Cancelling Switch
 
 _Quickly turn off noise cancellation on Bose 700 headphones_
 
