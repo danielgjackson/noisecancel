@@ -43,7 +43,7 @@ When toggling enabled on or off, device always starts at level=10 regardless of 
 
 ## Disclaimer
 
-> This product is provided 'AS IS', the developer makes no warranties, accepts no liability, and hereby disclaims any implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose. This software sends a specific message to the device you choose.  This has only been tested on one specific pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.
+> This product is provided 'AS IS', the developer makes no warranties, accepts no liability, and hereby disclaims any implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose. This software sends a specific message to the device you choose.  This has only been tested on one pair of headphones of a single firmware version.  You accept liability for whatever happens, including any damage, injury, or loss.
 
 ## See also
 
