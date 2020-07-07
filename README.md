@@ -25,7 +25,7 @@ Noise cancelling will turn back on if you press the Noise Control button on the 
 
 ## How?
 
-The application sends a short message (repeated 3 times) over the device's Serial Port Profile (SPP) connection, in hex:
+The application sends a short message (repeated 3 times) over the device's Serial Port Profile (SPP) connection:
 
 > `01 05 02 02 00 00`
 
