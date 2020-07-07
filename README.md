@@ -48,7 +48,7 @@ When toggling enabled on or off, device always starts at level=10 regardless of 
 ## See also
 
 * [App Website](https://noisecancel.danjackson.dev)
-<!-- * [Google Play Store Listing](https://play.google.com/store/apps/details?id=dev.danjackson.noisecancel) -->
+* [Google Play Store Listing](https://play.google.com/store/apps/details?id=dev.danjackson.noisecancel)
 * [Install directly from APK](https://github.com/danielgjackson/noisecancel/releases)
 <!-- * [Open Source Code Repository](https://github.com/danielgjackson/noisecancel/) ([license](https://github.com/danielgjackson/noisecancel/blob/master/LICENSE)) -->
 <!-- * [Privacy Policy](https://noisecancel.danjackson.dev/privacy.html) -->
