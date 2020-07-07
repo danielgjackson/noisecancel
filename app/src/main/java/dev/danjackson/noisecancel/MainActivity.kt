@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private var currentDeviceAddress: String? = null
     private var currentDeviceName: String? = null
+    private var currentDeviceType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +31,49 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         send.setOnClickListener {
-            run()
+            run("off")
         }
 
         val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
         currentDeviceAddress = sharedPreferences.getString("device_address", null)
         currentDeviceName = sharedPreferences.getString("device_name", null)
+        currentDeviceType = sharedPreferences.getString("device_type", null)
         preferencesChanged()
+    }
+
+    private fun chooseDeviceType() {
+        val deviceTypes = mutableMapOf<String, String>()
+        deviceTypes.put("700", getString(R.string.settings_device_type_700))
+        deviceTypes.put("qc35", getString(R.string.settings_device_type_qc35))
+        deviceTypes.put("all", getString(R.string.settings_device_type_all))
+
+        val deviceTypesList = deviceTypes.keys.toList()
+
+        val items = deviceTypesList.map { key -> deviceTypes[key] }.toTypedArray()
+        val currentDeviceTypeIndex = deviceTypesList.indexOf(currentDeviceType)
+
+        // User chooses
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.settings_choose_device_type))
+            .setSingleChoiceItems(
+                items,
+                currentDeviceTypeIndex
+            ) { dialog, which ->
+                currentDeviceType = deviceTypesList[which]
+
+                // Update preferences
+                val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("device_type", currentDeviceType)
+                editor.apply()
+
+                preferencesChanged()
+
+                dialog.dismiss()
+                chooseDevice()
+            }
+            .create()
+            .show()
     }
 
     private fun chooseDevice() {
@@ -101,7 +138,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage(getString(R.string.disclaimer2_message))
             .setPositiveButton(getString(R.string.disclaimer2_accept),
                 DialogInterface.OnClickListener { _, _ ->
-                    chooseDevice()
+                    chooseDeviceType()
                 })
             .setNegativeButton(getString(R.string.disclaimer2_cancel), DialogInterface.OnClickListener { _, _ -> {} })
             .show()
@@ -111,20 +148,28 @@ class MainActivity : AppCompatActivity() {
         if (currentDeviceAddress.isNullOrEmpty()) {
             showDisclaimer1()
         } else {
-            chooseDevice()
+            chooseDeviceType()
         }
     }
 
 
     private fun preferencesChanged() {
-        device_address.setText("${currentDeviceName ?: ""} <${currentDeviceAddress ?: "no device set"}>")
+        label_device_address.setText(
+            when (currentDeviceType) {
+                "qc35" -> R.string.settings_device_type_qc35
+                "all" -> R.string.settings_device_type_all
+                else -> R.string.settings_device_type_700  // 700
+            }
+        )
+        device_address.setText("${currentDeviceName ?: ""} <${currentDeviceAddress ?: "no device set"}> [${currentDeviceType ?: "unknown"}]")
     }
 
-    private fun run() {
+    private fun run(level: String) {
         if (currentDeviceAddress.isNullOrEmpty()) {
             settings()
         } else {
             val intent = Intent(this, SendService::class.java)
+            intent.putExtra("level", level)
             SendService.enqueueWork(applicationContext, intent)
         }
     }
@@ -155,11 +200,23 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_nc_off -> {
-                run()
+                run("off")
                 true
             }
             R.id.action_settings -> {
                 settings()
+                true
+            }
+            R.id.action_nc_0 -> {
+                run("0")
+                true
+            }
+            R.id.action_nc_5 -> {
+                run("5")
+                true
+            }
+            R.id.action_nc_10 -> {
+                run("10")
                 true
             }
             R.id.action_pin_shortcut_nc_off -> {
