@@ -14,18 +14,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentDeviceAddress: String? = null
-    private var currentDeviceName: String? = null
-    private var currentDeviceType: String? = null
+    private lateinit var settings: Settings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        settings = Settings.getInstance(applicationContext)
+
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)
@@ -34,86 +36,82 @@ class MainActivity : AppCompatActivity() {
             run("off")
         }
 
-        val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-        currentDeviceAddress = sharedPreferences.getString("device_address", null)
-        currentDeviceName = sharedPreferences.getString("device_name", null)
-        currentDeviceType = sharedPreferences.getString("device_type", null)
-        preferencesChanged()
+        settings.devicesData.observe(this, Observer {
+            val deviceSummary =
+                // Summary changes when preferences (including device selection) changes
+                when {
+                    it == null -> "\uD83D\uDD07"
+                    it.count() > 0 -> {
+                        it.map { "[${it.type.toString()}] ${it.name} <${it.address}>" }
+                        .joinToString(prefix = "\uD83C\uDFA7 ", separator = "\r\n\uD83C\uDFA7 ", postfix = "")
+                    } // 🎧
+                    else -> applicationContext.getString(R.string.device_list_summary)
+                }  // "⚠️"
+
+            device_address.setText(deviceSummary)
+        })
+
+    }
+
+    // TODO: Change UI so adding a device is its own activity rather than two dialog boxes
+    private fun addDevice() {
+        if (!settings.agreedDisclaimer()) {
+            showDisclaimer1()
+        } else {
+            chooseDeviceType()
+        }
     }
 
     private fun chooseDeviceType() {
         val deviceTypes = mutableMapOf<String, String>()
-        deviceTypes.put("700", getString(R.string.settings_device_type_700))
-        deviceTypes.put("qc35", getString(R.string.settings_device_type_qc35))
-        deviceTypes.put("all", getString(R.string.settings_device_type_all))
+        deviceTypes[DeviceType.NC700.toString()] = getString(R.string.settings_device_type_700)
+        deviceTypes[DeviceType.QC35.toString()] = getString(R.string.settings_device_type_qc35)
 
         val deviceTypesList = deviceTypes.keys.toList()
 
         val items = deviceTypesList.map { key -> deviceTypes[key] }.toTypedArray()
-        val currentDeviceTypeIndex = deviceTypesList.indexOf(currentDeviceType)
 
         // User chooses
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.settings_choose_device_type))
             .setSingleChoiceItems(
                 items,
-                currentDeviceTypeIndex
+                -1
             ) { dialog, which ->
-                currentDeviceType = deviceTypesList[which]
-
-                // Update preferences
-                val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("device_type", currentDeviceType)
-                editor.apply()
-
-                preferencesChanged()
-
+                val deviceType = DeviceType.fromString(deviceTypesList[which])
                 dialog.dismiss()
-                chooseDevice()
+                chooseDevice(deviceType)
             }
             .create()
             .show()
     }
 
-    private fun chooseDevice() {
+    private fun chooseDevice(deviceType: DeviceType) {
         // Map of addresses to names
         val devices = mutableMapOf<String, String?>()
-
-        // Add current device
-        if (currentDeviceAddress != null && currentDeviceAddress?.isNotEmpty()!!) {
-            devices[currentDeviceAddress!!] = currentDeviceName
-        }
 
         // Get bonded devices
         val bondedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices.orEmpty()
         bondedDevices.forEach { bluetoothDevice ->
-            devices[bluetoothDevice.address] = bluetoothDevice.name
+            devices[bluetoothDevice.address] = bluetoothDevice.name.orEmpty()
         }
 
         val deviceAddressList = devices.keys.toList()
 
         val items = deviceAddressList.map { key -> "${devices[key]} <${key}>" }.toTypedArray()
-        val currentDeviceIndex = deviceAddressList.indexOf(currentDeviceAddress)
 
         // User chooses
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.settings_choose_device))
             .setSingleChoiceItems(
                 items,
-                currentDeviceIndex
+                -1
             ) { dialog, which ->
-                currentDeviceAddress = deviceAddressList[which]
-                currentDeviceName = devices[currentDeviceAddress!!]
+                val address = deviceAddressList[which]
+                val name = devices[address].orEmpty()
 
-                // Update preferences
-                val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("device_address", currentDeviceAddress)
-                editor.putString("device_name", currentDeviceName)
-                editor.apply()
+                settings.addDevice(deviceType, address, name)
 
-                preferencesChanged()
                 dialog.dismiss()
             }
             .create()
@@ -124,11 +122,11 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.disclaimer1_title))
             .setMessage(getString(R.string.disclaimer1_message))
-            .setPositiveButton(getString(R.string.disclaimer1_accept),
-                DialogInterface.OnClickListener { _, _ ->
-                    showDisclaimer2()
-                })
-            .setNegativeButton(getString(R.string.disclaimer1_cancel), DialogInterface.OnClickListener { _, _ -> {} })
+            .setPositiveButton(getString(R.string.disclaimer1_accept)
+            ) { _, _ ->
+                showDisclaimer2()
+            }
+            .setNegativeButton(getString(R.string.disclaimer1_cancel)) { _, _ -> run {} }
             .show()
     }
 
@@ -136,37 +134,57 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.disclaimer2_title))
             .setMessage(getString(R.string.disclaimer2_message))
-            .setPositiveButton(getString(R.string.disclaimer2_accept),
-                DialogInterface.OnClickListener { _, _ ->
-                    chooseDeviceType()
-                })
-            .setNegativeButton(getString(R.string.disclaimer2_cancel), DialogInterface.OnClickListener { _, _ -> {} })
+            .setPositiveButton(getString(R.string.disclaimer2_accept)
+            ) { _, _ ->
+                chooseDeviceType()
+            }
+            .setNegativeButton(getString(R.string.disclaimer2_cancel)) { _, _ -> run {} }
             .show()
     }
 
-    private fun settings() {
-        if (currentDeviceAddress.isNullOrEmpty()) {
-            showDisclaimer1()
+    private fun removeDevice() {
+        val devices = settings.devices
+
+        val deviceAddressList = devices.keys.toList()
+
+        val items = deviceAddressList.map { key -> "${devices[key]} <${key}>" }.toTypedArray()
+
+        // User chooses
+        AlertDialog.Builder(this)
+            .setTitle("Remove device")
+            .setSingleChoiceItems(
+                items,
+                -1
+            ) { dialog, which ->
+                val address = deviceAddressList[which]
+                dialog.dismiss()
+                settings.removeDevice(address)
+            }
+            .create()
+            .show()
+    }
+
+    private fun configure() {
+        if (settings.devices.isEmpty()) {
+            addDevice()
         } else {
-            chooseDeviceType()
+            // TODO: Change UI to have a list of devices and a remove button so this isn't needed
+            AlertDialog.Builder(this)
+                .setTitle("Configure")
+                .setMessage("Configure devices")
+                .setPositiveButton("Add") { _, _ ->
+                    addDevice()
+                }
+                .setNegativeButton("Remove") { _, _ ->
+                    removeDevice()
+                }
+                .show()
         }
     }
 
-
-    private fun preferencesChanged() {
-        label_device_address.setText(
-            when (currentDeviceType) {
-                "qc35" -> R.string.settings_device_type_qc35
-                "all" -> R.string.settings_device_type_all
-                else -> R.string.settings_device_type_700  // 700
-            }
-        )
-        device_address.setText("${currentDeviceName ?: ""} <${currentDeviceAddress ?: "no device set"}> [${currentDeviceType ?: "unknown"}]")
-    }
-
     private fun run(level: String) {
-        if (currentDeviceAddress.isNullOrEmpty()) {
-            settings()
+        if (settings.devices.isEmpty()) {
+            configure()
         } else {
             val intent = Intent(this, SendService::class.java)
             intent.putExtra("level", level)
@@ -204,7 +222,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_settings -> {
-                settings()
+                configure()
                 true
             }
             R.id.action_nc_0 -> {

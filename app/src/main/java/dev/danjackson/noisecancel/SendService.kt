@@ -11,52 +11,42 @@ import java.io.IOException
 import java.io.OutputStream
 import java.util.*
 
+
+enum class Level(val label: String) {
+    NC_10("10"),
+    NC_5("5"),
+    NC_0("0"),
+    OFF("off");
+
+    override fun toString(): String {
+        return this.label
+    }
+
+    companion object {
+        fun fromString(string: String): Level {
+            return when(string) {
+                NC_10.label -> NC_10
+                NC_5.label -> NC_5
+                NC_0.label -> NC_0
+                else -> OFF
+            }
+        }
+    }
+}
+
+
 class SendService : JobIntentService() {
 
     override fun onHandleWork(intent: Intent) {
-        // val address = intent.getStringExtra("address")?.toString()
-        // val data = intent.data
-
-        val level = intent.extras?.get("level")?.toString().orEmpty()
-
-        try {
-            val sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
-            val deviceAddress = sharedPreferences.getString("device_address", null)
-            val deviceType = sharedPreferences.getString("device_type", null)
-
-            var description = when (level) {
-                "0" -> getString(R.string.send_nc_0)
-                "5" -> getString(R.string.send_nc_5)
-                "10" -> getString(R.string.send_nc_10)
-                else -> getString(R.string.send_nc_off)
+        val settings = Settings.getInstance(applicationContext)
+        val devices = settings.findConnectedDevices()
+        if (devices.isEmpty()) {
+            showToast("No configured devices connected.")
+        } else {
+            val level = Level.fromString(intent.extras?.get("level")?.toString().orEmpty())
+            for (device in devices) {
+                run(device, level)
             }
-
-            var message = when (deviceType) {
-                "qc35" -> when (level) {
-                    "0" -> messageQc35NoiseCancelling0
-                    "5" -> messageQc35NoiseCancelling5
-                    "10" -> messageQc35NoiseCancelling10
-                    else -> messageQc35NoiseCancellingOff
-                }
-                "all" -> when (level) {
-                    "0" -> messageAllNoiseCancelling0
-                    "5" -> messageAllNoiseCancelling5
-                    "10" -> messageAllNoiseCancelling10
-                    else -> messageAllNoiseCancellingOff
-                }
-                else -> when (level) {  // 700
-                    "0" -> message700NoiseCancelling0
-                    "5" -> message700NoiseCancelling5
-                    "10" -> message700NoiseCancelling10
-                    else -> message700NoiseCancellingOff
-                }
-            }
-
-            showToast(description)
-
-            run(deviceAddress, message, defaultSendTimes)
-        } catch (e: Exception) {
-            showToast("ERROR: ${e.message}")
         }
     }
 
@@ -67,12 +57,41 @@ class SendService : JobIntentService() {
         }
     }
 
-    private fun run(address: String?, messageBuffer: ByteArray, @Suppress("SameParameterValue") multiple: Int) {
-        println("RUN: Start...")
 
-        if (address == null || address.isEmpty()) {
-            throw IOException("Device not specified.")
+    private fun run(device: Device, level: Level) {
+        try {
+            var description = when (level) {
+                Level.NC_10 -> getString(R.string.send_nc_10)
+                Level.NC_5 -> getString(R.string.send_nc_5)
+                Level.NC_0 -> getString(R.string.send_nc_0)
+                Level.OFF -> getString(R.string.send_nc_off)
+            }
+
+            showToast(description)
+
+            var message = when (device.type) {
+                DeviceType.NC700 -> when (level) {
+                    Level.NC_10 -> message700NoiseCancelling10
+                    Level.NC_5 -> message700NoiseCancelling5
+                    Level.NC_0 -> message700NoiseCancelling0
+                    Level.OFF -> message700NoiseCancellingOff
+                }
+                DeviceType.QC35 -> when (level) {
+                    Level.NC_10 -> messageQc35NoiseCancelling10
+                    Level.NC_5 -> messageQc35NoiseCancelling5
+                    Level.NC_0 -> messageQc35NoiseCancelling0
+                    Level.OFF -> messageQc35NoiseCancellingOff
+                }
+            }
+            send(device, message, defaultSendTimes)
+        } catch (e: Exception) {
+            showToast("ERROR: ${e.message}")
         }
+    }
+
+
+    private fun send(device: Device, messageBuffer: ByteArray, @Suppress("SameParameterValue") multiple: Int) {
+        println("RUN: Start...")
 
         val adapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
             ?: throw IOException("No Bluetooth adapter.")
@@ -81,8 +100,8 @@ class SendService : JobIntentService() {
             throw IOException("Bluetooth adapter not enabled.")
         }
 
-        println("RUN: Getting remote device: $address")
-        val device = adapter.getRemoteDevice(address)
+        println("RUN: Getting remote device: $device.address")
+        val device = adapter.getRemoteDevice(device.address)
 
         println("RUN: Creating socket to: $uuidSpp")
         val socket: BluetoothSocket?
@@ -149,11 +168,6 @@ class SendService : JobIntentService() {
         val messageQc35NoiseCancelling10 = byteArrayOf(0x01, 0x06, 0x02, 0x01, 0x01)
         // QC35-RESPONSE:   0x01, 0x06, 0x03, 0x02, <level>, 0x0b
 
-        // Experimental and risky combined QC35+700 messages
-        val messageAllNoiseCancellingOff = byteArrayOf(0x01, 0x06, 0x02, 0x01, 0x00, 0x01, 0x05, 0x02, 0x02, 0x00, 0x00)
-        val messageAllNoiseCancelling0 = byteArrayOf(0x01, 0x06, 0x02, 0x01, 0x03, 0x01, 0x05, 0x02, 0x02, 0x0A, 0x01)
-        val messageAllNoiseCancelling5 = byteArrayOf(0x01, 0x06, 0x02, 0x01, 0x02, 0x01, 0x05, 0x02, 0x02, 0x05, 0x01)
-        val messageAllNoiseCancelling10 = byteArrayOf(0x01, 0x06, 0x02, 0x01, 0x01, 0x01, 0x05, 0x02, 0x02, 0x00, 0x01)
 
         private val uuidSpp: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
         private const val defaultSendTimes = 3
