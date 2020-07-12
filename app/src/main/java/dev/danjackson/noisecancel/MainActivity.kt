@@ -1,13 +1,16 @@
 package dev.danjackson.noisecancel
 
 import android.bluetooth.BluetoothAdapter
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -36,20 +39,42 @@ class MainActivity : AppCompatActivity() {
             run("off")
         }
 
-        settings.devicesData.observe(this, Observer {
-            val deviceSummary =
-                // Summary changes when preferences (including device selection) changes
-                when {
-                    it == null -> "\uD83D\uDD07"
-                    it.count() > 0 -> {
-                        it.map { "[${it.type.toString()}] ${it.name} <${it.address}>" }
-                        .joinToString(prefix = "\uD83C\uDFA7 ", separator = "\r\n\uD83C\uDFA7 ", postfix = "")
-                    } // 🎧
-                    else -> applicationContext.getString(R.string.device_list_summary)
-                }  // "⚠️"
+        device_list.onItemClickListener = OnItemClickListener { adapter, _, position, _ ->
+            val device = adapter.getItemAtPosition(position) as Device
+            promptRemoveDevice(device)
+        }
 
-            device_address.setText(deviceSummary)
-        })
+        settings.devicesData.observe(
+            this,
+            Observer {
+
+                // TODO: Don't recreate the adapter on update
+                val adapter: ArrayAdapter<Device> = object : ArrayAdapter<Device>(
+                    this,
+                    android.R.layout.simple_list_item_2,
+                    android.R.id.text1,
+                    settings.devicesData.value.orEmpty()
+                ) {
+                    override fun getView(
+                        position: Int,
+                        convertView: View?,
+                        parent: ViewGroup
+                    ): View {
+                        val view: View = super.getView(position, convertView, parent)
+                        view.findViewById<TextView>(android.R.id.text1).text = "\uD83C\uDFA7  ${settings.devicesData.value?.get(position)?.name}"
+                        view.findViewById<TextView>(android.R.id.text2).text = "${settings.devicesData.value?.get(position)?.type?.fullName}"
+                        return view
+                    }
+
+
+                }
+                device_list.adapter = adapter
+
+                //adapter.notifyDataSetChanged()
+
+                label_no_devices.visibility = if (it.isEmpty()) TextView.VISIBLE else TextView.INVISIBLE
+            }
+        )
 
     }
 
@@ -142,44 +167,19 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun removeDevice() {
-        val devices = settings.devices
-
-        val deviceAddressList = devices.keys.toList()
-
-        val items = deviceAddressList.map { key -> "${devices[key]} <${key}>" }.toTypedArray()
-
-        // User chooses
+    private fun promptRemoveDevice(device: Device) {
         AlertDialog.Builder(this)
-            .setTitle("Remove device")
-            .setSingleChoiceItems(
-                items,
-                -1
-            ) { dialog, which ->
-                val address = deviceAddressList[which]
-                dialog.dismiss()
-                settings.removeDevice(address)
+            .setTitle("Remove?")
+            .setMessage("Remove device: ${device.name}?")
+            .setPositiveButton("Remove") { _, _ ->
+                settings.removeDevice(device.address)
             }
-            .create()
+            .setNegativeButton("Cancel") { _, _ -> {} }
             .show()
     }
 
     private fun configure() {
-        if (settings.devices.isEmpty()) {
-            addDevice()
-        } else {
-            // TODO: Change UI to have a list of devices and a remove button so this isn't needed
-            AlertDialog.Builder(this)
-                .setTitle("Configure")
-                .setMessage("Configure devices")
-                .setPositiveButton("Add") { _, _ ->
-                    addDevice()
-                }
-                .setNegativeButton("Remove") { _, _ ->
-                    removeDevice()
-                }
-                .show()
-        }
+        addDevice()
     }
 
     private fun run(level: String) {

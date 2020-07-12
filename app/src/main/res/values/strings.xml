@@ -13,8 +13,8 @@
     <string name="action_pin_shortcut_nc_10">Add shortcut for NC 10</string>
 
     <!-- Main activity -->
-    <string name="device_label">Headphones</string>
-    <string name="device_list_summary">⚠ (no headphones)</string>
+    <string name="device_label">Configured Headphones</string>
+    <string name="device_list_summary">⚠ (no headphones configured)</string>
     <string name="action_disable_noise_cancelling">Turn off noise cancelling</string>
     <string name="prompt_end">Noise cancelling will turn back on when you next start the headphones or press the Noise Control button on the left ear cup.</string>
 
@@ -32,8 +32,8 @@
     <string name="settings_device_type_700">Bose 700 headphones</string>
     <string name="settings_device_type_qc35">Bose QC35 headphones</string>
 
-    <string name="settings_choose_device_type">Headphone type:</string>
-    <string name="settings_choose_device">Choose headphones:</string>
+    <string name="settings_choose_device_type">Type of new headphones:</string>
+    <string name="settings_choose_device">Headphone device:</string>
 
     <!-- SendService -->
     <string name="send_nc_off">Turning off noise cancelling...</string>

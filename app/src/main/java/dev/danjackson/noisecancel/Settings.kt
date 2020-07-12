@@ -9,9 +9,9 @@ import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import java.lang.IllegalArgumentException
 
-enum class DeviceType(val label: String) {
-    NC700("700"),
-    QC35("qc35");
+enum class DeviceType(val label: String, val fullName: String) {
+    NC700("700", "Bose NC 700"),
+    QC35("qc35", "Bose QC 35");
 
     override fun toString(): String {
         return this.label
@@ -50,7 +50,7 @@ class Settings(private val applicationContext: Context) {
     private var sharedPreferences: SharedPreferences = applicationContext.getSharedPreferences("preferences", Context.MODE_PRIVATE)
     private var sharedPreferencesListener: OnSharedPreferenceChangeListener? = null
 
-    var devicesData = MutableLiveData<List<Device>?>()
+    var devicesData = MutableLiveData<List<Device>>()
     var devices = mutableMapOf<String, Device>()
 
     // Determine that the disclaimer must have been agreed to if a device has been added
