@@ -1,17 +1,17 @@
 # Noise Cancelling Switch
 
-_Quickly turn off noise cancellation on Bose 700 headphones_
+_Quickly turn off noise cancellation on Bose NC 700 headphones_ (and Bose QC 35 headphones in source) 
 
 ![Turn Off Noise Cancellation App](docs/media/feature-graphic.png)
 
 
 ## What?
 
-This Android app allows you to quickly turn off noise cancellation on Bose 700 headphones.
+This Android app allows you to quickly turn off noise cancellation on Bose NC 700 headphones (and Bose QC 35 headphones in source).
 
 ## Why?
 
-Bose 700 headphones have a "noise control" button to cycle through noise cancellation presets, but these are on a scale (three presets between 0-10) from actively passing external sound through, to cancelling out external sound.  In a very quiet room, any setting on this scale can result in an audible hiss, and you may not want any active pass-through/cancelling at all, but just the sound.  The official _Bose Music_ app does allow you to temporarily turn off noise cancelling, but this setting is buried in the app and takes some time to get to.
+Bose NC 700 headphones have a "noise control" button to cycle through noise cancellation presets, but these are on a scale (three presets between 0-10) from actively passing external sound through, to cancelling out external sound.  In a very quiet room, any setting on this scale can result in an audible hiss, and you may not want any active pass-through/cancelling at all, but just the sound.  The official _Bose Music_ app does allow you to temporarily turn off noise cancelling, but this setting is buried in the app and takes some time to get to.
 
 ## When?
 
@@ -25,7 +25,7 @@ Noise cancelling will turn back on if you press the Noise Control button on the 
 
 ## How?
 
-The application sends a short message (repeated 3 times) over the device's Serial Port Profile (SPP) connection:
+For NC 700 headphones, the application sends a short message (repeated 3 times) over the device's Serial Port Profile (SPP) connection:
 
 > `01 05 02 02 00 00`
 
@@ -40,7 +40,7 @@ When toggling enabled on or off, device always starts at level=10 regardless of 
 > Response: 0x01 0x05 0x03 0x03 0x0b (10-level) (enabled)
 
 
-For QC35:
+For QC 35 headphones:
 
 QC35-NOISE-LOW:  0x01, 0x06, 0x02, 0x01, 0x03
 QC35-NOISE-MED:  0x01, 0x06, 0x02, 0x01, 0x02
