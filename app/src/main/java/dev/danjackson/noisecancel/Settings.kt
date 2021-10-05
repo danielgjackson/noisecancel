@@ -11,7 +11,10 @@ import java.lang.IllegalArgumentException
 
 enum class DeviceType(val label: String, val fullName: String) {
     NC700("700", "Bose NC 700"),
-    QC35("qc35", "Bose QC 35");
+    QC35("qc35", "Bose QC 35"),
+    QCE("qce", "Bose QC Earbuds"),
+    QC45("qc45", "Bose QC 45"),
+    ;
 
     override fun toString(): String {
         return this.label
@@ -22,6 +25,8 @@ enum class DeviceType(val label: String, val fullName: String) {
             return when(string) {
                 NC700.label -> NC700
                 QC35.label -> QC35
+                QCE.label -> QCE
+                QC45.label -> QC45
                 else -> NC700
             }
         }

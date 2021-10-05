@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         val deviceTypes = mutableMapOf<String, String>()
         deviceTypes[DeviceType.NC700.toString()] = getString(R.string.settings_device_type_700)
         deviceTypes[DeviceType.QC35.toString()] = getString(R.string.settings_device_type_qc35)
+        deviceTypes[DeviceType.QCE.toString()] = getString(R.string.settings_device_type_qce)
+        deviceTypes[DeviceType.QC45.toString()] = getString(R.string.settings_device_type_qc45)
 
         val deviceTypesList = deviceTypes.keys.toList()
 
@@ -174,7 +176,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Remove") { _, _ ->
                 settings.removeDevice(device.address)
             }
-            .setNegativeButton("Cancel") { _, _ -> {} }
+            .setNegativeButton("Cancel") { _, _ -> run {} }
             .show()
     }
 

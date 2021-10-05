@@ -16,7 +16,7 @@
     <string name="device_label">Configured Headphones</string>
     <string name="device_list_summary">⚠ (no headphones configured)</string>
     <string name="action_disable_noise_cancelling">Turn off noise cancelling</string>
-    <string name="prompt_end">Noise cancelling will turn back on when you next start the headphones or press the Noise Control button on the left ear cup.</string>
+    <string name="prompt_end">Only fully supports NC700 and QC35.  Only limited support for mode changes with QC Earbuds and QC45.  Noise cancelling will turn back on when you next start the headphones or press the Noise Control button on the left ear cup.</string>
 
     <!-- Settings -->
     <string name="disclaimer1_title">Disclaimer</string>
@@ -29,8 +29,10 @@
     <string name="disclaimer2_accept">Accept Liability</string>
     <string name="disclaimer2_cancel">Cancel</string>
 
-    <string name="settings_device_type_700">Bose 700 headphones</string>
+    <string name="settings_device_type_700">Bose Noise Cancelling Headphones 700</string>
     <string name="settings_device_type_qc35">Bose QC35 headphones</string>
+    <string name="settings_device_type_qce">Bose QC Earbuds</string>
+    <string name="settings_device_type_qc45">Bose QC45 headphones</string>
 
     <string name="settings_choose_device_type">Type of new headphones:</string>
     <string name="settings_choose_device">Headphone device:</string>
