@@ -39,8 +39,9 @@ The cancellation levels are fully supported on the NC700: "off", "0", "5" and "1
 
 To change noise cancellation level on the NC700, where `enabled` is `0`=off, `1`=on; and, if enabled, `level` is `0`-`10` (the level is inverted in the packet to: `10 - level`):
 
-> Send: 0x01 0x05 0x02 0x02 (10-level) (enabled)
-> Response: 0x01 0x05 0x03 0x03 0x0b (10-level) (enabled)
+> Send: `0x01 0x05 0x02 0x02 (10-level) (enabled)`
+
+> Response: `0x01 0x05 0x03 0x03 0x0b (10-level) (enabled)`
 
 When toggling enabled `off` to `on`, device returns to default level regardless of the level sent, so a second repeat packet is required to resume to a level other than 10.
 
@@ -51,8 +52,9 @@ The cancellation levels are partly supported on the QC35: "off" (off), "0" (low)
 
 To change noise cancellation level on the QC35, where `mode` is `0`=off, `1`=high, (`2`=medium?), `3`=low:
 
-> Send: 0x01 0x06 0x02 0x01 (mode)
-> Response: 0x01 0x06 0x03 0x02 (mode) 0x0b
+> Send: `0x01 0x06 0x02 0x01 (mode)`
+
+> Response: `0x01 0x06 0x03 0x02 (mode) 0x0b`
 
 The *medium* mode does not appear to do anything on the *QC35* -- perhaps it does something on the *QC35ii*?
 
@@ -63,9 +65,11 @@ The cancellation levels are approximated by switching modes on the QC Earbuds: "
 
 To change the noise cancellation mode on the QC Earbuds, where `mode` is `0`=Quiet (full NC), `1`=Aware (pass-through with optional *ActiveSense* adjustment for loud noises), `2`=first user-supplied custom mode, `3`=second user-supplied custom mode.
 
-> Send: 0x1f 0x03 0x05 0x02 (mode) 0x01
-> Response: 0x1f 0x03 0x07 0x00
-> Response: 0x1f 0x03 0x06 0x01 (mode)
+> Send: `0x1f 0x03 0x05 0x02 (mode) 0x01`
+
+> Response: `0x1f 0x03 0x07 0x00`
+
+> Response: `0x1f 0x03 0x06 0x01 (mode)`
 
 
 ### How: QC45
@@ -74,9 +78,11 @@ The cancellation levels are approximated by switching modes on the QC45: "off" (
 
 To change the noise cancellation mode on the QC45, where `mode` is `0`=Quiet (full NC), `1`=Aware (pass-through):
 
-> Send: 0x1f 0x03 0x05 0x02 (mode) 0x01
-> Response: 0x1f 0x03 0x07 0x00
-> Response: 0x1f 0x03 0x06 0x01 (mode)
+> Send: `0x1f 0x03 0x05 0x02 (mode) 0x01`
+
+> Response: `0x1f 0x03 0x07 0x00`
+
+> Response: `0x1f 0x03 0x06 0x01 (mode)`
 
 QC45 does not support custom modes, but sending `mode=2` ("first user-supplied custom mode" on the earbuds) causes the device to say "quiet" but seemingly not change mode?
 
