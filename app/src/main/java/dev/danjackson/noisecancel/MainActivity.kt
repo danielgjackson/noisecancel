@@ -1,7 +1,10 @@
 package dev.danjackson.noisecancel
 
-import android.bluetooth.BluetoothAdapter
+import android.Manifest
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -14,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -78,8 +82,51 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isNotEmpty()) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addDevice()
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_CONNECT)) {
+                    val builder = AlertDialog.Builder(this)
+                    with(builder)
+                    {
+                        setTitle("Bluetooth Connect Permission")
+                        setMessage("To connect to your device, this app requires Bluetooth Connect permission.")
+                        setPositiveButton("OK") { _, _ ->
+
+                        }
+                        setPositiveButton("Cancel") { _, _ ->
+                            Toast.makeText(applicationContext,"Cannot add device without Bluetooth Connect permission", Toast.LENGTH_SHORT).show()
+                        }
+                        show()
+                    }
+                } else {
+                    Toast.makeText(applicationContext,"Cannot add device without Bluetooth Connect permission", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private val bluetoothConnectRequestCode = 1
+
     // TODO: Change UI so adding a device is its own activity rather than two dialog boxes
     private fun addDevice() {
+        // Prompt for Bluetooth permission if required
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), bluetoothConnectRequestCode)
+            } else {
+                Toast.makeText(applicationContext,"Problem requesting permission: Bluetooth Connect", Toast.LENGTH_SHORT).show()
+            }
+            return
+        }
+
         if (!settings.agreedDisclaimer()) {
             showDisclaimer1()
         } else {
@@ -118,9 +165,14 @@ class MainActivity : AppCompatActivity() {
         val devices = mutableMapOf<String, String?>()
 
         // Get bonded devices
-        val bondedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices.orEmpty()
-        bondedDevices.forEach { bluetoothDevice ->
-            devices[bluetoothDevice.address] = bluetoothDevice.name.orEmpty()
+        val bluetoothManager = this.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        try {
+            val bondedDevices = bluetoothManager.adapter?.bondedDevices.orEmpty()
+            bondedDevices.forEach { bluetoothDevice ->
+                devices[bluetoothDevice.address] = bluetoothDevice.name.orEmpty()
+            }
+        } catch (e: SecurityException) {
+            Toast.makeText(applicationContext,"Problem adding device -- check permission given: Bluetooth Connect", Toast.LENGTH_SHORT).show()
         }
 
         val deviceAddressList = devices.keys.toList()
