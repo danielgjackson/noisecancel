@@ -1,6 +1,7 @@
 package dev.danjackson.noisecancel
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -106,7 +107,8 @@ class Settings(private val applicationContext: Context) {
     // TODO: Use a different technique as AudioManager.getDevices() is too limited on older API versions
     fun findConnectedDevices(): Set<Device> {
         val connected = mutableSetOf<Device>()
-        val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+        val bluetoothManager = applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
         // Ignore everything if Bluetooth is not enabled
         if (bluetoothAdapter?.isEnabled == true) {
             // If we're on a recent version, check the list of connected devices
