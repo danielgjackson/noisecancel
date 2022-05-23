@@ -60,7 +60,7 @@ class Settings(private val applicationContext: Context) {
 
     // Determine that the disclaimer must have been agreed to if a device has been added
     fun agreedDisclaimer(): Boolean {
-        return devices.count() != 0
+        return devices.isNotEmpty()
     }
 
     fun addDevice(deviceType: DeviceType, address: String, name: String) {

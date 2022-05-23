@@ -1,12 +1,14 @@
 package dev.danjackson.noisecancel
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
-import androidx.core.app.JobIntentService
+import androidx.core.app.JobIntentService   // TODO: Move from deprecated JobIntentService, possibly to WorkManager.enqueueUniqueWork()?
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
@@ -52,9 +54,9 @@ class SendService : JobIntentService() {
         }
     }
 
-    private val handler = Handler()
+
     private fun showToast(text: CharSequence?) {
-        handler.post {
+        Handler(Looper.getMainLooper()).post {
             Toast.makeText(this@SendService, text, Toast.LENGTH_LONG).show()
         }
     }
@@ -62,7 +64,7 @@ class SendService : JobIntentService() {
 
     private fun run(device: Device, level: Level) {
         try {
-            var description = when (level) {
+            val description = when (level) {
                 Level.NC_10 -> getString(R.string.send_nc_10)
                 Level.NC_5 -> getString(R.string.send_nc_5)
                 Level.NC_0 -> getString(R.string.send_nc_0)
@@ -71,7 +73,7 @@ class SendService : JobIntentService() {
 
             showToast(description)
 
-            var message = when (device.type) {
+            val message = when (device.type) {
                 DeviceType.NC700 -> when (level) {
                     Level.NC_10 -> message700NoiseCancelling10
                     Level.NC_5 -> message700NoiseCancelling5
@@ -107,9 +109,8 @@ class SendService : JobIntentService() {
     private fun send(device: Device, messageBuffer: ByteArray, @Suppress("SameParameterValue") multiple: Int) {
         println("RUN: Start...")
 
-        val adapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            ?: throw IOException("No Bluetooth adapter.")
-
+        val bluetoothManager = this.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val adapter: BluetoothAdapter = bluetoothManager.adapter ?: throw IOException("No Bluetooth adapter.")
         if (!adapter.isEnabled) {
             throw IOException("Bluetooth adapter not enabled.")
         }
@@ -121,6 +122,8 @@ class SendService : JobIntentService() {
         val socket: BluetoothSocket?
         try {
             socket = remoteDevice.createRfcommSocketToServiceRecord(uuidSpp)
+        } catch (e: SecurityException) {
+            throw IOException("Permission issue creating socket", e)
         } catch (e: IOException) {
             throw IOException("Problem creating socket", e)
         }
@@ -129,6 +132,8 @@ class SendService : JobIntentService() {
             println("RUN: Connecting...")
             try {
                 socket.connect()
+            } catch (e: SecurityException) {
+                throw IOException("Permission issue connecting", e)
             } catch (e: IOException) {
                 throw IOException("Problem connecting", e)
             }

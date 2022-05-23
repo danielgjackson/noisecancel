@@ -11,10 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,8 +20,6 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,48 +33,50 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        send.setOnClickListener {
+        findViewById<Button>(R.id.send).setOnClickListener {
             run("off")
         }
 
-        device_list.onItemClickListener = OnItemClickListener { adapter, _, position, _ ->
+        findViewById<ListView>(R.id.device_list).onItemClickListener = OnItemClickListener { adapter, _, position, _ ->
             val device = adapter.getItemAtPosition(position) as Device
             promptRemoveDevice(device)
         }
 
         settings.devicesData.observe(
-            this,
-            Observer {
+            this
+        ) {
 
-                // TODO: Don't recreate the adapter on update
-                val adapter: ArrayAdapter<Device> = object : ArrayAdapter<Device>(
-                    this,
-                    android.R.layout.simple_list_item_2,
-                    android.R.id.text1,
-                    settings.devicesData.value.orEmpty()
-                ) {
-                    override fun getView(
-                        position: Int,
-                        convertView: View?,
-                        parent: ViewGroup
-                    ): View {
-                        val view: View = super.getView(position, convertView, parent)
-                        view.findViewById<TextView>(android.R.id.text1).text = "\uD83C\uDFA7  ${settings.devicesData.value?.get(position)?.name}"
-                        view.findViewById<TextView>(android.R.id.text2).text = "${settings.devicesData.value?.get(position)?.type?.fullName}"
-                        return view
-                    }
-
-
+            // TODO: Don't recreate the adapter on update
+            val adapter: ArrayAdapter<Device> = object : ArrayAdapter<Device>(
+                this,
+                android.R.layout.simple_list_item_2,
+                android.R.id.text1,
+                settings.devicesData.value.orEmpty()
+            ) {
+                override fun getView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val view: View = super.getView(position, convertView, parent)
+                    view.findViewById<TextView>(android.R.id.text1).text =
+                        "\uD83C\uDFA7  ${settings.devicesData.value?.get(position)?.name}"
+                    view.findViewById<TextView>(android.R.id.text2).text =
+                        "${settings.devicesData.value?.get(position)?.type?.fullName}"
+                    return view
                 }
-                device_list.adapter = adapter
 
-                //adapter.notifyDataSetChanged()
 
-                label_no_devices.visibility = if (it.isEmpty()) TextView.VISIBLE else TextView.INVISIBLE
             }
-        )
+            findViewById<ListView>(R.id.device_list).adapter = adapter
+
+            //adapter.notifyDataSetChanged()
+
+            findViewById<TextView>(R.id.label_no_devices).visibility =
+                if (it.isEmpty()) TextView.VISIBLE else TextView.INVISIBLE
+        }
 
     }
 

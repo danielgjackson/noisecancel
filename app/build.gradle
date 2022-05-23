@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 32
@@ -28,6 +28,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'dev.danjackson.noisecancel'
 }
 
 dependencies {
