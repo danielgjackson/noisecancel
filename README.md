@@ -99,6 +99,17 @@ QC45 does not support custom modes, but sending `mode=2` ("first user-supplied c
 <!-- * [Open Source Code Repository](https://github.com/danielgjackson/noisecancel/) ([license](https://github.com/danielgjackson/noisecancel/blob/master/LICENSE)) -->
 <!-- * [Privacy Policy](https://noisecancel.danjackson.dev/privacy.html) -->
 
+<!--
+Install from .APK file:
+
+* Install directly on your device.  For detailed instructions, follow an online guide for your make and model of phone.
+
+* Install from your computer if you have the [Android SDK Platform-Tools](https://developer.android.com/studio/releases/platform-tools) using [adb](https://developer.android.com/studio/command-line/adb):
+
+    ```bash
+    adb install app-release.apk
+    ```
+-->
 
 <!--
 
