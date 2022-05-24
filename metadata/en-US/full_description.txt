@@ -1,0 +1,8 @@
+This app allows you to quickly turn off noise cancellation on Bose Noise Cancelling Headphones 700 (NC 700) and Bose QC 35 (QC35) headphones.  It also allows a (less-useful) change of mode on Bose QC Earbuds and Bose QC 45 headphones (but not able to fully disable active noise cancellation on these devices).
+
+For example, the Bose Noise Cancelling Headphones 700 can cycle through noise cancellation presets, but these are on a scale from actively passing external sound through, to cancelling out external sound. In a very quiet room, any setting on this scale can result in an audible hiss, and you may not want any active pass-through/cancelling at all, but just the source sound. 
+
+This app allows you to turn off noise cancellation, either in the app, or by adding a quick settings tile, or adding a single touch shortcut you can pin to your launcher.
+
+Noise cancelling will turn back on if you alter the noise control settings on the headphones, or when you next turn the headphones on.
+
