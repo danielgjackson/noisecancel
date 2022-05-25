@@ -131,3 +131,15 @@ Install from .APK file:
   * Where *Protocol* is *SPP*
 
 -->
+
+<!--
+Releases:
+
+* Update versionCode in: `app/build.gradle`
+* Update versionName in: `app/build.gradle`
+* Add `metadata/en-US/changelogs/$versionCode.txt`
+* Build signed APK, rename to: noisecancel-$versionName.apk
+* Create release with APK attached named: $versionName
+* Build signed AAB
+* Create new release on Google Play Console
+-->
