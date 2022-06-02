@@ -11,6 +11,12 @@ This Android app allows you to quickly turn off noise cancellation on *Bose Nois
 
 The app also allows a (less-useful) change of mode on *Bose QC Earbuds* and *Bose QC 45* headphones -- it is not able to fully disable active noise cancellation.
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/dev.danjackson.noisecancel/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=dev.danjackson.noisecancel)
 
 ## Why?
 
@@ -94,7 +100,6 @@ QC45 does not support custom modes, but sending `mode=2` ("first user-supplied c
 ## See also
 
 * [App Website](https://noisecancel.danjackson.dev)
-* [Google Play Store Listing](https://play.google.com/store/apps/details?id=dev.danjackson.noisecancel)
 * [Install directly from APK](https://github.com/danielgjackson/noisecancel/releases)
 <!-- * [Open Source Code Repository](https://github.com/danielgjackson/noisecancel/) ([license](https://github.com/danielgjackson/noisecancel/blob/master/LICENSE)) -->
 <!-- * [Privacy Policy](https://noisecancel.danjackson.dev/privacy.html) -->
