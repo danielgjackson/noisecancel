@@ -1,0 +1,1 @@
+* Fixed settings not working on Android 11 and below (caused by incorrectly handling new permission on Android 12).

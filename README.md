@@ -143,3 +143,23 @@ Releases:
 * Build signed AAB
 * Create new release on Google Play Console
 -->
+
+
+<!--
+FDroid:
+
+```bash
+# See: https://gitlab.com/fdroid/fdroiddata/blob/master/CONTRIBUTING.md#building-it
+cd fdroiddata
+git checkout dev.danjackson.noisecancel
+fdroid readmeta
+fdroid checkupdates dev.danjackson.noisecancel
+vi metadata/dev.danjackson.noisecancel.yml # versionName/versionCode/commit
+fdroid lint dev.danjackson.noisecancel
+fdroid rewritemeta dev.danjackson.noisecancel
+fdroid build -v -l dev.danjackson.noisecancel
+git add metadata/dev.danjackson.noisecancel.yml
+git commit -m "Updated metadata"
+git push
+```
+-->

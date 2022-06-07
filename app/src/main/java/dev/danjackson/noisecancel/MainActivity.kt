@@ -116,19 +116,14 @@ class MainActivity : AppCompatActivity() {
     // TODO: Change UI so adding a device is its own activity rather than two dialog boxes
     private fun addDevice() {
         // Prompt for Bluetooth permission if required
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), bluetoothConnectRequestCode)
-            } else {
-                Toast.makeText(applicationContext,"Problem requesting permission: Bluetooth Connect", Toast.LENGTH_SHORT).show()
-            }
-            return
-        }
-
-        if (!settings.agreedDisclaimer()) {
-            showDisclaimer1()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.BLUETOOTH_CONNECT), bluetoothConnectRequestCode)
         } else {
-            chooseDeviceType()
+            if (!settings.agreedDisclaimer()) {
+                showDisclaimer1()
+            } else {
+                chooseDeviceType()
+            }
         }
     }
 
